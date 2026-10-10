@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expandable Image Gallery</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f4f4;
+      padding:20px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:30px;
+      color:#333;
+    }
+
+    /* MAIN CATEGORY BUTTONS */
+
+    .category-buttons{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-bottom:35px;
+    }
+
+    .category-buttons button{
+      padding:12px 22px;
+      border:none;
+      border-radius:8px;
+      background:#333;
+      color:white;
+      cursor:pointer;
+      font-size:16px;
+      transition:0.3s;
+    }
+
+    .category-buttons button:hover{
+      background:#ff5722;
+      transform:translateY(-2px);
+    }
+
+    /* CATEGORY SECTION */
+
+    .category-section{
+      display:none;
+      margin-bottom:50px;
+      animation:fadeIn 0.5s ease;
+    }
+
+    .category-section.active{
+      display:block;
+    }
+
+    .category-title{
+      margin-bottom:20px;
+      color:#222;
+      font-size:28px;
+      border-left:6px solid #ff5722;
+      padding-left:12px;
+    }
+
+    /* IMAGE GRID */
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .gallery-item{
+      position:relative;
+      overflow:hidden;
+      border-radius:12px;
+      cursor:pointer;
+      background:white;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .gallery-item img{
+      width:100%;
+      height:240px;
+      object-fit:cover;
+      transition:0.5s ease;
+      display:block;
+    }
+
+    /* HOVER EFFECT */
+
+    .gallery-item:hover img{
+      transform:scale(1.08);
+      filter:brightness(75%);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.4);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-size:22px;
+      font-weight:bold;
+      opacity:0;
+      transition:0.4s;
+    }
+
+    .gallery-item:hover .overlay{
+      opacity:1;
+    }
+
+    /* LIGHTBOX */
+
+    .lightbox{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.9);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      z-index:999;
+      padding:20px;
+    }
+
+    .lightbox img{
+      max-width:90%;
+      max-height:80vh;
+      border-radius:10px;
+      animation:zoom 0.4s ease;
+    }
+
+    @keyframes zoom{
+      from{
+        transform:scale(0.7);
+        opacity:0;
+      }
+      to{
+        transform:scale(1);
+        opacity:1;
+      }
+    }
+
+    .close{
+      position:absolute;
+      top:20px;
+      right:35px;
+      color:white;
+      font-size:40px;
+      cursor:pointer;
+    }
+
+    .controls{
+      margin-top:20px;
+      display:flex;
+      gap:15px;
+    }
+
+    .controls button{
+      padding:10px 18px;
+      border:none;
+      border-radius:6px;
+      background:#ff5722;
+      color:white;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    .controls button:hover{
+      background:#e64a19;
+    }
+
+    /* ANIMATION */
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(15px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:768px){
+
+      .gallery-item img{
+        height:200px;
+      }
+
+      .category-title{
+        font-size:24px;
+      }
+
+    }
+
+    @media(max-width:500px){
+
+      .gallery{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Expandable Responsive Image Gallery</h1>
+
+  <!-- CATEGORY BUTTONS -->
+
+  <div class="category-buttons">
+
+    <button onclick="showCategory('nature')">
+      Nature
+    </button>
+
+    <button onclick="showCategory('city')">
+      City
+    </button>
+
+    <button onclick="showCategory('animals')">
+      Animals
+    </button>
+
+  </div>
+
+  <!-- NATURE SECTION -->
+
+  <div class="category-section active" id="nature">
+
+    <h2 class="category-title">Nature Gallery</h2>
+
+    <div class="gallery">
+
+      <div class="gallery-item">
+        <img src="https://wallpapercave.com/wp/wp3251792.jpg">
+        <div class="overlay">Mountains</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://wallpaperaccess.com/full/184531.jpg">
+        <div class="overlay">Waterfall</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://wallpapercave.com/wp/NXRaxEy.jpg">
+        <div class="overlay">Forest</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://static.vecteezy.com/system/resources/previews/007/417/227/large_2x/tropical-beach-nature-as-summer-landscape-with-lounge-chairs-and-palm-trees-and-calm-sea-for-beach-banner-luxurious-travel-landscape-beautiful-destination-for-vacation-or-holiday-beach-scene-photo.jpg">
+        <div class="overlay">Beach</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CITY SECTION -->
+
+  <div class="category-section" id="city">
+
+    <h2 class="category-title">City Gallery</h2>
+
+    <div class="gallery">
+
+      <div class="gallery-item">
+        <img src="https://wallpapercave.com/wp/wp3544754.jpg">
+        <div class="overlay">Buildings</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://wallpapers.com/images/featured/1920-x-1080-night-city-y13hx1qucv0ztepv.jpg">
+        <div class="overlay">City Night</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://png.pngtree.com/thumb_back/fw800/background/20240913/pngtree-high-way-road-and-city-background-image-image_16185325.jpg">
+        <div class="overlay">Roads</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://wallpapercave.com/wp/wp3563027.jpg">
+        <div class="overlay">Bridge</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ANIMALS SECTION -->
+
+  <div class="category-section" id="animals">
+
+    <h2 class="category-title">Animals Gallery</h2>
+
+    <div class="gallery">
+
+      <div class="gallery-item">
+        <img src="https://jooinn.com/images/dog-67.jpg">
+        <div class="overlay">Dog</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://images.wallpapersden.com/image/download/elephant-hd-sunset-photography_bWxtbGWUmZqaraWkpJRnZWltrWZoa2s.jpg">
+        <div class="overlay">Elephant</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://cdn.britannica.com/94/494-050-A674AD3A/Fallow-deer-dama-dama.jpg">
+        <div class="overlay">Wildlife</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://images.pexels.com/photos/3828097/pexels-photo-3828097.jpeg?cs=srgb&dl=pexels-lavoni-islam-3828097.jpg&fm=jpg">
+        <div class="overlay">Rabbit</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+
+  <div class="lightbox" id="lightbox">
+
+    <span class="close" id="closeBtn">&times;</span>
+
+    <img id="lightboxImg">
+
+    <div class="controls">
+      <button id="prevBtn">Prev</button>
+      <button id="nextBtn">Next</button>
+    </div>
+
+  </div>
+
+  <script>
+
+    // CATEGORY SWITCHING
+
+    function showCategory(categoryId){
+
+      const sections =
+        document.querySelectorAll('.category-section');
+
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+
+      document
+        .getElementById(categoryId)
+        .classList.add('active');
+
+      updateGalleryItems();
+
+    }
+
+    // LIGHTBOX
+
+    const lightbox =
+      document.getElementById('lightbox');
+
+    const lightboxImg =
+      document.getElementById('lightboxImg');
+
+    const closeBtn =
+      document.getElementById('closeBtn');
+
+    const nextBtn =
+      document.getElementById('nextBtn');
+
+    const prevBtn =
+      document.getElementById('prevBtn');
+
+    let currentImages = [];
+    let currentIndex = 0;
+
+    function updateGalleryItems(){
+
+      const activeSection =
+        document.querySelector('.category-section.active');
+
+      currentImages =
+        activeSection.querySelectorAll('.gallery-item');
+
+      currentImages.forEach((item,index)=>{
+
+        item.onclick = () => {
+
+          currentIndex = index;
+
+          showImage();
+
+          lightbox.style.display = 'flex';
+        };
+
+      });
+
+    }
+
+    function showImage(){
+
+      const img =
+        currentImages[currentIndex]
+        .querySelector('img');
+
+      lightboxImg.src = img.src;
+
+    }
+
+    // NEXT BUTTON
+
+    nextBtn.addEventListener('click',()=>{
+
+      currentIndex =
+      (currentIndex + 1) % currentImages.length;
+
+      showImage();
+
+    });
+
+    // PREV BUTTON
+
+    prevBtn.addEventListener('click',()=>{
+
+      currentIndex =
+      (currentIndex - 1 + currentImages.length)
+      % currentImages.length;
+
+      showImage();
+
+    });
+
+    // CLOSE LIGHTBOX
+
+    closeBtn.addEventListener('click',()=>{
+
+      lightbox.style.display = 'none';
+
+    });
+
+    // CLOSE ON OUTSIDE CLICK
+
+    lightbox.addEventListener('click',(e)=>{
+
+      if(e.target === lightbox){
+
+        lightbox.style.display = 'none';
+
+      }
+
+    });
+
+    // INITIALIZE
+
+    updateGalleryItems();
+
+  </script>
+
+</body>
+</html>
